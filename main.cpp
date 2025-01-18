@@ -53,6 +53,7 @@ void processing() {
         if (Driver_Seat_Button) {
             uartUsb.write("Welcome to enhanced alarm system model 218-W24\r\n", 50);
             break;
+            //break out of the loop to continue to the next step
         }
     }
     
