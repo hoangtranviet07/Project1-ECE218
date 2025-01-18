@@ -43,11 +43,12 @@ void outputsInit() {
     engineLed = OFF;
 }
 
+// The processing function implements the whole project
 void processing() {
     inputsInit();
     outputsInit();
     
-    // Welcome message loop
+    // Welcome message loop when driver seat button is pressed
     while (true) {
         if (Driver_Seat_Button) {
             uartUsb.write("Welcome to enhanced alarm system model 218-W24\r\n", 50);
@@ -55,7 +56,11 @@ void processing() {
         }
     }
     
-    // Ignition control loop
+    /* Ignition control loop
+    *  Check whether all 4 conditions are satisfied so that the ignition Led will be on.
+    *  If not, siren alarm, print out ignition is inhibited then list the unsatisfied
+    *  condition(s).
+    */
     while (true) {
         if (Driver_Seat_Button && Pass_Seat_Button && Driver_Belt_Button && Pass_Belt_Button) {
             ignitionLed = ON;
@@ -64,6 +69,7 @@ void processing() {
                 ignitionLed = OFF;
                 uartUsb.write("Engine started.\r\n", 17);
                 break;
+                //break out of the loop to continue to the next step
             }
         } else {
             if (ignitionButton) {
@@ -84,6 +90,7 @@ void processing() {
                     uartUsb.write("Passenger seatbelt not fastened\r\n", 34);
                 }
                 break;
+                //break out of the loop so that the message will not be sent multiple times.
             }
         }
     }
